@@ -34,34 +34,43 @@ class GameSprite(sprite.Sprite):
             window.blit(self.tanka, (self.rect.x, self.rect.y))
     
 class bullet(sprite.Sprite):
-    def __init__(self, bullet_img, size_x, size_y, bullet_x, bullet_y, bullet_speed, bullet_dmg):
+    def __init__(self, img, x,y):
         super().__init__()
-        self.image = transform.scale(image.load(bullet_img), (size_x, size_y))
-        self.speed = bullet_speed
-        self.rect = self.image.get_rect()
-        self.rect.x = bullet_x
-        self.rect.y = bullet_y
-        self.dmg = bullet_dmg
-
+        self.image = transform.scale(image.load(img), (30,20))
+        self.rect = self.image.get_rect() 
+        self.rect.x = x
+        self.rect.y = y
+        self.napr = player.napr
     def ris(self):
-        self.bulletu = transform.scale(self.image, (70,100))
-        self.bulletr = transform.rotate(self.image, 90)
-        self.bulletd = transform.rotate(self.image, 180)
-        self.bulletl = transform.rotate(self.image, 270)
-        if player.napr == "vverh":
-            window.blit(self.bulletu, (player.rect.x, player.rect.y))
-            bullet.rect.y += bullet.speed
-        elif player.napr =="vniz":
-            bullet.rect.y -= bullet.speed
-            window.blit(self.bulletd, (player.rect.x, player.rect.y))
-        elif player.napr =="levo":
-            window.blit(self.bulletl, (player.rect.x, player.rect.y))
-            bullet.rect.x -= bullet.speed
-        elif player.napr =="pravo":
-            window.blit(self.bulletr, (player.rect.x, player.rect.y))
-            bullet.rect.x += bullet.speed
+        self.br = transform.scale(self.image, (40,20))
+        self.bu = transform.rotate(self.image, 90)
+        self.bl = transform.rotate(self.image, 180)
+        self.bd = transform.rotate(self.image, 270)
+        if self.napr == "vverh":
+            self.rect.y -= 5
+            window.blit(self.bu, (self.rect.x, self.rect.y))
+        elif self.napr == "vniz":
+            self.rect.y += 5
+            window.blit(self.bd, (self.rect.x, self.rect.y))
+        elif self.napr == "levo":
+            self.rect.x -= 5
+            window.blit(self.bl, (self.rect.x, self.rect.y))
+        elif self.napr == "pravo":
+            self.rect.x += 5
+            window.blit(self.br, (self.rect.x, self.rect.y))
 
 class gameobj(sprite.Sprite):
+    def __init__(self, img, x,y,w,h,dmg):
+        super().__init__()
+        self.image = transform.scale(image.load(img), (w,h))
+        self.rect = self.image.get_rect() 
+        self.rect.x = x
+        self.rect.y = y
+        self.dmg = dmg
+    def ris(self):
+        window.blit(self.image, (self.rect.x, self.rect.y))
+
+class minaobj(sprite.Sprite):
     def __init__(self, img, x,y,w,h,dmg):
         super().__init__()
         self.image = transform.scale(image.load(img), (w,h))
@@ -74,12 +83,11 @@ class gameobj(sprite.Sprite):
         
 
 player = GameSprite('tanku.png', 70, 100, 0, 0, 5, 100)
-bullet = bullet('bulletu.png', 50, 50, 2000, 2000, 5, 20)
-exit1 =  gameobj('выход.png', 1300, 400, 50, 50, 0)
-exit2 =  gameobj('выход.png', 50, 50, 50, 50, 0)
-exit3 =  gameobj('выход.png', 1400, 700, 50, 50, 0)
+exit1 =  gameobj('выход.jpg', 1300, 400, 50, 50, 0)
+exit2 =  gameobj('выход.jpg', 50, 50, 50, 50, 0)
+exit3 =  gameobj('выход.jpg', 1400, 700, 50, 50, 0)
 
-
+mybullets = []
     
 with open('map.txt') as file:
     karta = file.readlines()
@@ -88,9 +96,12 @@ x1 = 0
 y1 = 0
 x2 = 0
 y2 = 0
-map = []
+map1 = []
 map2 = []
 map3 = []
+m1 = []
+m2 = []
+m3 = []
 
 
 for y in karta:
@@ -98,11 +109,49 @@ for y in karta:
     for x in line:
         if "1" in x:
             w = gameobj('wall.png', x1, y1, 50,50,0)
-            map.append(w)
+            map1.append(w)
         x1 += 40
         if "2" in x:
-            m = gameobj('мина.png', x2,y2,50,50,80)
-            map.append(m)
+            m = minaobj('мина.png', x2,y2,50,50,80)
+            m1.append(m)
+        x2 += 40
+    x1 = 0
+    y1+=40
+    x2 = 0
+    y2 +=40
+
+
+with open('map2.txt') as file:
+        karta = file.readlines()
+for y in karta:
+    line = y.split(' ')
+    for x in line:
+        if "1" in x:
+            w = gameobj('wall.png', x1, y1, 50,50,0)
+            map2.append(w)
+        x1 += 40
+        if "2" in x:
+            m = minaobj('мина.png', x2,y2,50,50,80)
+            m2.append(m)
+        x2 += 40
+    x1 = 0
+    y1+=40
+    x2 = 0
+    y2 +=40
+
+with open('map3.txt') as file3:
+    karta = file.readlines()
+
+for y in karta:
+    line = y.split(' ')
+    for x in line:
+        if "1" in x:
+            w = gameobj('wall.png', x1, y1, 50,50,0)
+            map3.append(w)
+        x1 += 40
+        if "2" in x:
+            m = minaobj('мина.png', x2,y2,50,50,80)
+            m3.append(m)
         x2 += 40
     x1 = 0
     y1+=40
@@ -114,6 +163,18 @@ while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
+        if e.type == KEYDOWN:
+            if e.key == K_SPACE:
+                if player.napr == 'levo':
+                    p = bullet('bulletr.png', player.rect.x+5, player.rect.y+25)
+                if player.napr == 'pravo':
+                    p = bullet('bulletr.png', player.rect.x+5, player.rect.y+25)
+                if player.napr == 'vverh':
+                    p = bullet('bulletr.png', player.rect.x+25, player.rect.y+5)
+                if player.napr == 'vniz':
+                    p = bullet('bulletr.png', player.rect.x+25, player.rect.y+5)
+                mybullets.append(p)
+
     keys = key.get_pressed()
     if keys[K_d]:
         player.napr = "pravo"
@@ -131,58 +192,23 @@ while game:
             
     if sprite.collide_rect(player, exit1):
         lvl1 = False
+        #for i in map1:
+        #    map1.remove(i)
+        #for i2 in m1:
+        #    m1.remove(i2)
+        map2.ris()
+        m2.ris()
         lvl2 = True
-        for w in map:
-            map.remove(w)
         
-        with open('map2.txt') as file2:
-            karta = file2.readlines()
-        for y in karta:
-            line = y.split(' ')
-            for x in line:
-                if "1" in x:
-                    w = gameobj('wall.png', x1, y1, 50,50,0)
-                    map2.append(w)
-                x1 += 40
-
-                if "2" in x:
-                    m = gameobj('мина.png', x2,y2,50,50,80)
-                    map2.append(m)
-                x2 += 40
-            x1 = 0
-            y1+=40
-            x2 = 0
-            y2 +=40
 
         if sprite.collide_rect(player, exit2):
             lvl2 = False
             lvl3 = True
             for w in map2:
-                map2.remove(w)
-            with open('map3.txt') as file3:
-                karta = file3.readlines()
+                map1.remove(w)
+                m1.remove(m)
 
-        for y in karta:
-            line = y.split(' ')
-            for x in line:
-                if "1" in x:
-                    w = gameobj('wall.png', x1, y1, 50,50,0)
-                    map3.append(w)
-                x1 += 40
-
-                if "2" in x:
-                    m = gameobj('мина.png', x2,y2,50,50,80)
-                    map3.append(m)
-                x2 += 40
-            x1 = 0
-            y1+=40
-            x2 = 0
-            y2 +=40
-
-
-    if sprite.collide_rect(player, m):
-        player.hp -= 80
-        map.remove(m)
+    
     if player.hp <= 0:
         game = False
 
@@ -191,22 +217,26 @@ while game:
 
     player.ris()
 
-    #if e.type==KEYDOWN:
-    #    if e.key==K_SPACE:
-    #        bullet.rect.x = player.rect.x + 5
-    #        bullet.ris()
 
+    if lvl1 == True:
+        for w in map1:
+            w.ris()
+            
+        for m in m1:
+            m.ris()
+            if sprite.collide_rect(player, m):
+                    player.hp -= 80
+                    m1.remove(m)
 
-
-    for w in map:
-        w.ris()
-    for m in map:
-        m.ris()
-
-    for w in map2:
-        w.ris()
-    for m in map2:
-        m.ris()
+    if lvl2 == True:
+        for w in map2:
+           w.ris()
+        for m in m2:
+           m.ris()
+           if sprite.collide_rect(player, m):
+                player.hp -= 80
+                m1.remove(m)
+           
 
 
     if lvl1 == True:
@@ -215,5 +245,8 @@ while game:
         exit2.ris()
     if lvl3 == True:
         exit3.ris()
+
+    for pp in mybullets:
+        pp.ris() 
     fps.tick(60)
     display.update()
