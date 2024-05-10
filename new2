@@ -1,0 +1,266 @@
+from pygame import*
+
+window = display.set_mode((1500, 800))
+
+fps = time.Clock()
+game = True
+lvl1 = True
+lvl2 = False
+lvl3 = False
+
+class GameSprite(sprite.Sprite):
+    def __init__(self, player_image, size_x, size_y, player_x, player_y,  player_speed, player_hp):
+        super().__init__()
+        self.image = transform.scale(image.load(player_image), (size_x, size_y))
+        self.speed = player_speed
+        self.rect = self.image.get_rect()
+        self.rect.x = player_x
+        self.rect.y = player_y
+        self.hp = player_hp
+        self.napr = "vverh"
+
+    def ris(self):
+        self.tanku = transform.scale(self.image, (70,100))
+        self.tankr = transform.rotate(self.image, 90)
+        self.tankd = transform.rotate(self.image, 180)
+        self.tanka = transform.rotate(self.image, 270)
+        if player.napr == "vverh":
+            window.blit(self.tanku, (self.rect.x, self.rect.y))
+        elif player.napr =="vniz":
+            window.blit(self.tankd, (self.rect.x, self.rect.y))
+        elif player.napr =="levo":
+            window.blit(self.tankr, (self.rect.x, self.rect.y))
+        elif player.napr =="pravo":
+            window.blit(self.tanka, (self.rect.x, self.rect.y))
+
+class vrag(sprite.Sprite):
+    def __init__(self, img, size_x, size_y, x, y, dmg, hp, speed):
+        super().__init__()
+        self.image = transform.scale(image.load(img), (size_x, size_y))
+        self.rect.x = x
+        self.rect.y = y
+        self.dmg = dmg
+        self.hp = hp
+        self.speed = 5
+
+    def ris(self):
+        window.blit(self.image, (self.rect.x, self.rect.y))
+    
+class bullet(sprite.Sprite):
+    def __init__(self, img, x,y):
+        super().__init__()
+        self.image = transform.scale(image.load(img), (30,20))
+        self.rect = self.image.get_rect() 
+        self.rect.x = x
+        self.rect.y = y
+        self.napr = player.napr
+    def ris(self):
+        self.br = transform.scale(self.image, (40,20))
+        self.bu = transform.rotate(self.image, 90)
+        self.bl = transform.rotate(self.image, 180)
+        self.bd = transform.rotate(self.image, 270)
+        if self.napr == "vverh":
+            self.rect.y -= 5
+            window.blit(self.bu, (self.rect.x, self.rect.y))
+        elif self.napr == "vniz":
+            self.rect.y += 5
+            window.blit(self.bd, (self.rect.x, self.rect.y))
+        elif self.napr == "levo":
+            self.rect.x -= 5
+            window.blit(self.bl, (self.rect.x, self.rect.y))
+        elif self.napr == "pravo":
+            self.rect.x += 5
+            window.blit(self.br, (self.rect.x, self.rect.y))
+
+class gameobj(sprite.Sprite):
+    def __init__(self, img, x,y,w,h,dmg):
+        super().__init__()
+        self.image = transform.scale(image.load(img), (w,h))
+        self.rect = self.image.get_rect() 
+        self.rect.x = x
+        self.rect.y = y
+        self.dmg = dmg
+    def ris(self):
+        window.blit(self.image, (self.rect.x, self.rect.y))
+
+class minaobj(sprite.Sprite):
+    def __init__(self, img, x,y,w,h,dmg):
+        super().__init__()
+        self.image = transform.scale(image.load(img), (w,h))
+        self.rect = self.image.get_rect() 
+        self.rect.x = x
+        self.rect.y = y
+        self.dmg = dmg
+    def ris(self):
+        window.blit(self.image, (self.rect.x, self.rect.y))
+        
+
+player = GameSprite('tanku.png', 70, 100, 0, 0, 5, 100)
+exit1 =  gameobj('выход.jpg', 1300, 400, 50, 50, 0)
+exit2 =  gameobj('выход.jpg', 50, 50, 50, 50, 0)
+exit3 =  gameobj('выход.jpg', 1400, 700, 50, 50, 0)
+vrag1 = GameSprite('tankuv.png', 70, 100, 400, 300, 5, 100)
+
+mybullets = []
+    
+with open('map.txt') as file:
+    karta = file.readlines()
+
+x1 = 0
+y1 = 0
+x2 = 0
+y2 = 0
+map1 = []
+map2 = []
+map3 = []
+m1 = []
+m2 = []
+m3 = []
+
+
+for y in karta:
+    line = y.split(' ')
+    for x in line:
+        if "1" in x:
+            w = gameobj('wall.png', x1, y1, 50,50,0)
+            map1.append(w)
+        x1 += 40
+        if "2" in x:
+            m = minaobj('мина.png', x2,y2,50,50,80)
+            m1.append(m)
+        x2 += 40
+    x1 = 0
+    y1+=40
+    x2 = 0
+    y2 +=40
+
+
+with open('map2.txt') as file:
+        karta = file.readlines()
+for y in karta:
+    line = y.split(' ')
+    for x in line:
+        if "1" in x:
+            w = gameobj('wall.png', x1, y1, 50,50,0)
+            map2.append(w)
+        x1 += 40
+        if "2" in x:
+            m = minaobj('мина.png', x2,y2,50,50,80)
+            m2.append(m)
+        x2 += 40
+    x1 = 0
+    y1+=40
+    x2 = 0
+    y2 +=40
+
+with open('map3.txt') as file:
+    karta = file.readlines()
+
+for y in karta:
+    line = y.split(' ')
+    for x in line:
+        if "1" in x:
+            w = gameobj('wall.png', x1, y1, 50,50,0)
+            map3.append(w)
+        x1 += 40
+        if "2" in x:
+            m = minaobj('мина.png', x2,y2,50,50,80)
+            m3.append(m)
+        x2 += 40
+    x1 = 0
+    y1+=40
+    x2 = 0
+    y2 +=40
+
+
+while game:
+    x3 = player.rect.x
+    y3 = player.rect.y
+    for e in event.get():
+        if e.type == QUIT:
+            game = False
+        if e.type == KEYDOWN:
+            if e.key == K_SPACE:
+                if player.napr == 'levo':
+                    p = bullet('bulletr.png', player.rect.x+5, player.rect.y+25)
+                if player.napr == 'pravo':
+                    p = bullet('bulletr.png', player.rect.x+5, player.rect.y+25)
+                if player.napr == 'vverh':
+                    p = bullet('bulletr.png', player.rect.x+25, player.rect.y+5)
+                if player.napr == 'vniz':
+                    p = bullet('bulletr.png', player.rect.x+25, player.rect.y+5)
+                mybullets.append(p)
+
+    keys = key.get_pressed()
+    if keys[K_d]:
+        player.napr = "pravo"
+        player.rect.x += player.speed
+    elif keys[K_a]:
+        player.napr = "levo"
+        player.rect.x -= player.speed
+    if keys[K_w]:
+        player.napr = "vverh"
+        player.rect.y -= player.speed
+    elif keys[K_s]:
+        player.napr = "vniz"
+        player.rect.y += player.speed
+
+            
+    if sprite.collide_rect(player, exit1):
+        lvl1 = False
+        #for i in map1:
+        #    map1.remove(i)
+        #for i2 in m1:
+        #    m1.remove(i2)
+        map2.ris()
+        m2.ris()
+        lvl2 = True
+        
+
+        if sprite.collide_rect(player, exit2):
+            lvl2 = False
+            lvl3 = True
+            for w in map2:
+                map1.remove(w)
+                m1.remove(m)
+
+    
+    if player.hp <= 0:
+        game = False
+
+
+    window.fill((40, 80, 60))
+
+    player.ris()
+
+
+    if lvl1 == True:
+        for w in map1:
+            w.ris()
+            
+        for m in m1:
+            m.ris()
+            if sprite.collide_rect(player, m):
+                    player.hp -= 80
+                    m1.remove(m)
+
+    if lvl2 == True:
+        for w in map2:
+           w.ris()
+        for m in m2:
+           m.ris()
+           if sprite.collide_rect(player, m):
+                player.hp -= 80
+                m1.remove(m)
+
+    if lvl1 == True:
+        exit1.ris()
+    if lvl2 == True:
+        exit2.ris()
+    if lvl3 == True:
+        exit3.ris()
+
+    for pp in mybullets:
+        pp.ris() 
+    fps.tick(60)
+    display.update()
