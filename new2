@@ -224,6 +224,15 @@ while game:
                 map1.remove(w)
                 m1.remove(m)
 
+    if player.napr == 'vverh' and sprite.collide_rect(player, w):
+        player.rect.y -= 1
+    if player.napr == 'vniz' and sprite.collide_rect(player, w):
+        player.rect.y += 1
+    if player.napr == 'levo' and sprite.collide_rect(player, w):
+        player.rect.x += 1
+    if player.napr == 'pravo' and sprite.collide_rect(player, w):
+        player.rect.x -= 1
+
     
     if player.hp <= 0:
         game = False
