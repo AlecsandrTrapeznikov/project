@@ -1,9 +1,14 @@
 from pygame import*
+import time as tm
+font.init() 
 
 window = display.set_mode((1500, 800))
 
+f1 = font.Font(None, 36)
+
 fps = time.Clock()
 game = True
+ex = False
 lvl1 = True
 lvl2 = False
 lvl3 = False
@@ -25,22 +30,22 @@ class GameSprite(sprite.Sprite):
         self.tankd = transform.rotate(self.image, 180)
         self.tanka = transform.rotate(self.image, 270)
         if player.napr == "vverh":
-            window.blit(self.tanku, (self.rect.x, self.rect.y))
+            window.blit(self.tanku, (player.rect.x, player.rect.y))
         elif player.napr =="vniz":
-            window.blit(self.tankd, (self.rect.x, self.rect.y))
+            window.blit(self.tankd, (player.rect.x, player.rect.y))
         elif player.napr =="levo":
-            window.blit(self.tankr, (self.rect.x, self.rect.y))
+            window.blit(self.tankr, (player.rect.x, player.rect.y))
         elif player.napr =="pravo":
-            window.blit(self.tanka, (self.rect.x, self.rect.y))
+            window.blit(self.tanka, (player.rect.x, player.rect.y))
 
         if player2.napr == "vverh":
-            window.blit(self.tanku, (self.rect.x, self.rect.y))
+            window.blit(self.tanku, (player2.rect.x, player2.rect.y))
         elif player2.napr =="vniz":
-            window.blit(self.tankd, (self.rect.x, self.rect.y))
+            window.blit(self.tankd, (player2.rect.x, player2.rect.y))
         elif player2.napr =="levo":
-            window.blit(self.tankr, (self.rect.x, self.rect.y))
+            window.blit(self.tankr, (player2.rect.x, player2.rect.y))
         elif player2.napr =="pravo":
-            window.blit(self.tanka, (self.rect.x, self.rect.y))
+            window.blit(self.tanka, (player2.rect.x, player2.rect.y))
     
 class bullet(sprite.Sprite):
     def __init__(self, img, x,y):
@@ -91,7 +96,7 @@ class minaobj(sprite.Sprite):
         window.blit(self.image, (self.rect.x, self.rect.y))
         
 
-player = GameSprite('tanku.png', 70, 100, 0, 0, 5, 100)
+player = GameSprite('tanku.png', 70, 100, 60, 60, 6, 100)
 exit1 =  gameobj('выход.jpg', 1300, 400, 50, 50, 0)
 exit2 =  gameobj('выход.jpg', 50, 50, 50, 50, 0)
 exit3 =  gameobj('выход.jpg', 1400, 700, 50, 50, 0)
@@ -168,8 +173,10 @@ for y in karta:
     x2 = 0
     y2 +=40
 
-
+time1 = tm.time()
 while game:
+    window.fill((40, 80, 60))
+    time2 = tm.time()
     x3 = player.rect.x
     y3 = player.rect.y
     for e in event.get():
@@ -214,54 +221,88 @@ while game:
         player2.napr = "vniz"
         player2.rect.y += player2.speed
 
-            
-    if sprite.collide_rect(player, exit1):
+    text = f1.render(str(time2-time1), True, (255,255,255))
+
+   
+    if sprite.collide_rect(player2, exit1):
+        exit1.rect.x=5000
+        ex = False
         lvl1 = False
-        #for i in map1:
-        #    map1.remove(i)
-        #for i2 in m1:
-        #    m1.remove(i2)
+        lvl2 = True
+        time1 = tm.time()
+
+    if lvl2 == True:
         for w in map2:
             w.ris()
         for m in m2:
             m.ris()
-        lvl2 = True       
+        time3 = tm.time()
+        if time3 - time1 > 30:
+            exit2.ris()
+        text2 = f1.render(str(time3-time1), True, (255,255,255))    
 
-        if sprite.collide_rect(player, exit2):
-            lvl2 = False
-            lvl3 = True
-            for w in map2:
-                map2.remove(w)
-                m2.remove(m)
+    if sprite.collide_rect(player2, exit2):
+        exit2.rect.x = 5000
+        lvl2 = False
+        lvl3 = True
+        time1 = tm.time()
 
-    if player.napr == 'vverh' and sprite.collide_rect(player, w):
-        player.rect.y -= 1
-    if player.napr == 'vniz' and sprite.collide_rect(player, w):
-        player.rect.y += 1
-    if player.napr == 'levo' and sprite.collide_rect(player, w):
-        player.rect.x += 1
-    if player.napr == 'pravo' and sprite.collide_rect(player, w):
-        player.rect.x -= 1
+    if lvl3 == True:
+        for w in map3:
+            w.ris()
+        for m in m3:
+            m.ris()
+        time4 = tm.time()
+        if time4 - time1 > 30:
+            exit3.ris()
+        text3 = f1.render(str(time4-time1), True, (255,255,255))
+
+    if sprite.collide_rect(player2, exit3):
+        print('player2 win')
+        game = False
 
     
     if player.hp <= 0:
         game = False
+    if player2.hp <= 0:
+        game = False
 
-
-    window.fill((40, 80, 60))
 
     player.ris()
     player2.ris()
 
+    if lvl1 == True:
+        if time2 - time1 > 3:
+            exit1.ris()
 
     if lvl1 == True:
         for w in map1:
             w.ris()
+            if player.napr == 'vverh' and sprite.collide_rect(player, w):
+                player.rect.y += 5
+            if player.napr == 'vniz' and sprite.collide_rect(player, w):
+                player.rect.y -= 5
+            if player.napr == 'levo' and sprite.collide_rect(player, w):
+                player.rect.x += 5
+            if player.napr == 'pravo' and sprite.collide_rect(player, w):
+                player.rect.x -= 5
+
+            if player2.napr == 'vverh' and sprite.collide_rect(player2, w):
+                player.rect.y += 5
+            if player2.napr == 'vniz' and sprite.collide_rect(player2, w):
+                player2.rect.y -= 5
+            if player2.napr == 'levo' and sprite.collide_rect(player2, w):
+                player2.rect.x += 5
+            if player2.napr == 'pravo' and sprite.collide_rect(player2, w):
+                player2.rect.x -= 5
             
         for m in m1:
             m.ris()
             if sprite.collide_rect(player, m):
                     player.hp -= 80
+                    m1.remove(m)
+            if sprite.collide_rect(player2, m):
+                    player2.hp -= 80
                     m1.remove(m)
 
     if lvl2 == True:
@@ -271,16 +312,21 @@ while game:
            m.ris()
            if sprite.collide_rect(player, m):
                 player.hp -= 80
-                m1.remove(m)
-
+                m2.remove(m)
+           if sprite.collide_rect(player2, m):
+                player2.hp -= 80
+                m2.remove(m)
     if lvl1 == True:
-        exit1.ris()
+        window.blit(text, (720,10))
     if lvl2 == True:
-        exit2.ris()
+        window.blit(text2, (720,10))
     if lvl3 == True:
-        exit3.ris()
+        window.blit(text3, (720,10))
 
     for pp in mybullets:
         pp.ris() 
+        if sprite.collide_rect(pp, player2):
+            player2.hp -= 40
+            mybullets.remove(pp)
     fps.tick(60)
     display.update()
