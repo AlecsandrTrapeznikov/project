@@ -33,18 +33,14 @@ class GameSprite(sprite.Sprite):
         elif player.napr =="pravo":
             window.blit(self.tanka, (self.rect.x, self.rect.y))
 
-class vrag(sprite.Sprite):
-    def __init__(self, img, size_x, size_y, vrag_x, vrag_y, dmg, hp, speed):
-        super().__init__()
-        self.image = transform.scale(image.load(img), (size_x, size_y))
-        self.rect.x = vrag_x
-        self.rect.y = vrag_y
-        self.dmg = dmg
-        self.hp = hp
-        self.speed = 5
-
-    def ris(self):
-        window.blit(self.image, (self.rect.x, self.rect.y))
+        if player2.napr == "vverh":
+            window.blit(self.tanku, (self.rect.x, self.rect.y))
+        elif player2.napr =="vniz":
+            window.blit(self.tankd, (self.rect.x, self.rect.y))
+        elif player2.napr =="levo":
+            window.blit(self.tankr, (self.rect.x, self.rect.y))
+        elif player2.napr =="pravo":
+            window.blit(self.tanka, (self.rect.x, self.rect.y))
     
 class bullet(sprite.Sprite):
     def __init__(self, img, x,y):
@@ -99,7 +95,7 @@ player = GameSprite('tanku.png', 70, 100, 0, 0, 5, 100)
 exit1 =  gameobj('выход.jpg', 1300, 400, 50, 50, 0)
 exit2 =  gameobj('выход.jpg', 50, 50, 50, 50, 0)
 exit3 =  gameobj('выход.jpg', 1400, 700, 50, 50, 0)
-vrag1 = GameSprite('tankrv.png', 70, 100, 400, 300, 5, 100)
+player2 = GameSprite('tanku.png', 70, 100, 600, 600, 5, 100)
 
 mybullets = []
     
@@ -205,6 +201,19 @@ while game:
         player.napr = "vniz"
         player.rect.y += player.speed
 
+    if keys[K_RIGHT]:
+        player2.napr = "pravo"
+        player2.rect.x += player2.speed
+    elif keys[K_LEFT]:
+        player2.napr = "levo"
+        player2.rect.x -= player2.speed
+    if keys[K_UP]:
+        player2.napr = "vverh"
+        player2.rect.y -= player2.speed
+    elif keys[K_DOWN]:
+        player2.napr = "vniz"
+        player2.rect.y += player2.speed
+
             
     if sprite.collide_rect(player, exit1):
         lvl1 = False
@@ -216,18 +225,7 @@ while game:
             w.ris()
         for m in m2:
             m.ris()
-        lvl2 = True
-
-    vrag1.ris()
-    if vrag1.rect.x == 400 and vrag1.rect.y == 300:
-        for g in range(40):
-            vrag1.rect.x += 5
-    if vrag1.rect.x == 600 and vrag1.rect.y == 300:
-        vrag1.image = 'tanklv.png'
-        for g in range(40):
-            vrag1.rect.x -= 5
-    
-        
+        lvl2 = True       
 
         if sprite.collide_rect(player, exit2):
             lvl2 = False
@@ -253,6 +251,7 @@ while game:
     window.fill((40, 80, 60))
 
     player.ris()
+    player2.ris()
 
 
     if lvl1 == True:
