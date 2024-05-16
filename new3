@@ -102,10 +102,7 @@ exit2 =  gameobj('выход.jpg', 50, 50, 50, 50, 0)
 exit3 =  gameobj('выход.jpg', 1400, 700, 50, 50, 0)
 player2 = GameSprite('tanku.png', 70, 100, 600, 600, 5, 100)
 
-mybullets = []
-    
-with open('map.txt') as file:
-    karta = file.readlines()
+mybullets = []    
 
 x1 = 0
 y1 = 0
@@ -118,6 +115,8 @@ m1 = []
 m2 = []
 m3 = []
 
+with open('map.txt') as file:
+    karta = file.readlines()
 
 for y in karta:
     line = y.split(' ')
@@ -134,10 +133,14 @@ for y in karta:
     y1+=40
     x2 = 0
     y2 +=40
+y1 = 0
+y2 = 0
 
+file.close()
 
 with open('map2.txt') as file:
         karta = file.readlines()
+
 for y in karta:
     line = y.split(' ')
     for x in line:
@@ -153,6 +156,12 @@ for y in karta:
     y1+=40
     x2 = 0
     y2 +=40
+
+y1 = 0
+y2 = 0
+
+file.close()
+
 
 with open('map3.txt') as file:
     karta = file.readlines()
@@ -172,6 +181,8 @@ for y in karta:
     y1+=40
     x2 = 0
     y2 +=40
+
+file.close()
 
 time1 = tm.time()
 while game:
@@ -226,18 +237,13 @@ while game:
    
     if sprite.collide_rect(player2, exit1):
         exit1.rect.x=5000
-        ex = False
         lvl1 = False
         lvl2 = True
         time1 = tm.time()
 
     if lvl2 == True:
-        for w in map2:
-            w.ris()
-        for m in m2:
-            m.ris()
         time3 = tm.time()
-        if time3 - time1 > 30:
+        if time3 - time1 > 3:
             exit2.ris()
         text2 = f1.render(str(time3-time1), True, (255,255,255))    
 
@@ -248,17 +254,15 @@ while game:
         time1 = tm.time()
 
     if lvl3 == True:
-        for w in map3:
-            w.ris()
-        for m in m3:
-            m.ris()
         time4 = tm.time()
-        if time4 - time1 > 30:
+        if time4 - time1 > 3:
             exit3.ris()
         text3 = f1.render(str(time4-time1), True, (255,255,255))
 
     if sprite.collide_rect(player2, exit3):
-        print('player2 win')
+        text4 = f1.render('player2 win', True, (255,255,255))
+        window.blit(text4, (750, 400))
+        tm.sleep(5)
         game = False
 
     
@@ -271,11 +275,10 @@ while game:
     player.ris()
     player2.ris()
 
+
     if lvl1 == True:
         if time2 - time1 > 3:
             exit1.ris()
-
-    if lvl1 == True:
         for w in map1:
             w.ris()
             if player.napr == 'vverh' and sprite.collide_rect(player, w):
@@ -313,14 +316,26 @@ while game:
            if sprite.collide_rect(player, m):
                 player.hp -= 80
                 m2.remove(m)
-           if sprite.collide_rect(player2, m):
-                player2.hp -= 80
-                m2.remove(m)
-    if lvl1 == True:
-        window.blit(text, (720,10))
-    if lvl2 == True:
         window.blit(text2, (720,10))
+
+    if lvl1 == True:
+        for w in map1:
+           w.ris()
+        for m in m1:
+           m.ris()
+           if sprite.collide_rect(player, m):
+                player.hp -= 80
+                m1.remove(m)
+        window.blit(text, (720,10))
+                
     if lvl3 == True:
+        for w in map3:
+           w.ris()
+        for m in m3:
+           m.ris()
+           if sprite.collide_rect(player, m):
+                player.hp -= 80
+                m3.remove(m)
         window.blit(text3, (720,10))
 
     for pp in mybullets:
