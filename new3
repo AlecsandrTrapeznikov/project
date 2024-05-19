@@ -25,7 +25,7 @@ class GameSprite(sprite.Sprite):
         self.napr = "vverh"
 
     def ris(self):
-        self.tanku = transform.scale(self.image, (70,100))
+        self.tanku = transform.scale(self.image, (60,70))
         self.tankr = transform.rotate(self.image, 90)
         self.tankd = transform.rotate(self.image, 180)
         self.tanka = transform.rotate(self.image, 270)
@@ -96,11 +96,11 @@ class minaobj(sprite.Sprite):
         window.blit(self.image, (self.rect.x, self.rect.y))
         
 
-player = GameSprite('tanku.png', 70, 100, 60, 60, 6, 100)
+player = GameSprite('tanku.png', 60, 70, 60, 60, 7, 100)
 exit1 =  gameobj('выход.jpg', 1300, 400, 50, 50, 0)
 exit2 =  gameobj('выход.jpg', 50, 50, 50, 50, 0)
 exit3 =  gameobj('выход.jpg', 1400, 700, 50, 50, 0)
-player2 = GameSprite('tanku.png', 70, 100, 600, 600, 5, 100)
+player2 = GameSprite('tanku.png', 60, 70, 60, 600, 5, 100)
 
 mybullets = []    
 
@@ -280,25 +280,23 @@ while game:
         if time2 - time1 > 3:
             exit1.ris()
         for w in map1:
-            w.ris()
+            w.ris()   
             if player.napr == 'vverh' and sprite.collide_rect(player, w):
-                player.rect.y += 5
+                player.rect.y += 3
             if player.napr == 'vniz' and sprite.collide_rect(player, w):
-                player.rect.y -= 5
+                player.rect.y -= 3
             if player.napr == 'levo' and sprite.collide_rect(player, w):
-                player.rect.x += 5
+                player.rect.x += 3
             if player.napr == 'pravo' and sprite.collide_rect(player, w):
-                player.rect.x -= 5
-
+                player.rect.x -= 3
             if player2.napr == 'vverh' and sprite.collide_rect(player2, w):
-                player.rect.y += 5
+                player2.rect.y += 3
             if player2.napr == 'vniz' and sprite.collide_rect(player2, w):
-                player2.rect.y -= 5
+                player2.rect.y -= 3
             if player2.napr == 'levo' and sprite.collide_rect(player2, w):
-                player2.rect.x += 5
+                player2.rect.x += 3
             if player2.napr == 'pravo' and sprite.collide_rect(player2, w):
-                player2.rect.x -= 5
-            
+                player2.rect.x -= 3    
         for m in m1:
             m.ris()
             if sprite.collide_rect(player, m):
@@ -311,30 +309,61 @@ while game:
     if lvl2 == True:
         for w in map2:
            w.ris()
+           if player.napr == 'vverh' and sprite.collide_rect(player, w):
+               player.rect.y += 3
+           if player.napr == 'vniz' and sprite.collide_rect(player, w):
+               player.rect.y -= 3
+           if player.napr == 'levo' and sprite.collide_rect(player, w):
+               player.rect.x += 3
+           if player.napr == 'pravo' and sprite.collide_rect(player, w):
+               player.rect.x -= 3
+           if player2.napr == 'vverh' and sprite.collide_rect(player2, w):
+               player2.rect.y += 3
+           if player2.napr == 'vniz' and sprite.collide_rect(player2, w):
+               player2.rect.y -= 3
+           if player2.napr == 'levo' and sprite.collide_rect(player2, w):
+               player2.rect.x += 3
+           if player2.napr == 'pravo' and sprite.collide_rect(player2, w):
+               player2.rect.x -= 3
         for m in m2:
            m.ris()
            if sprite.collide_rect(player, m):
-                player.hp -= 80
-                m2.remove(m)
+                   player.hp -= 80
+                   m2.remove(m)
+           if sprite.collide_rect(player2, m):
+                   player2.hp -= 80
+                   m2.remove(m)
         window.blit(text2, (720,10))
 
     if lvl1 == True:
-        for w in map1:
-           w.ris()
-        for m in m1:
-           m.ris()
-           if sprite.collide_rect(player, m):
-                player.hp -= 80
-                m1.remove(m)
         window.blit(text, (720,10))
                 
     if lvl3 == True:
         for w in map3:
            w.ris()
+           if player.napr == 'vverh' and sprite.collide_rect(player, w):
+               player.rect.y += 3
+           if player.napr == 'vniz' and sprite.collide_rect(player, w):
+               player.rect.y -= 3
+           if player.napr == 'levo' and sprite.collide_rect(player, w):
+               player.rect.x += 3
+           if player.napr == 'pravo' and sprite.collide_rect(player, w):
+               player.rect.x -= 3
+           if player2.napr == 'vverh' and sprite.collide_rect(player2, w):
+               player2.rect.y += 3
+           if player2.napr == 'vniz' and sprite.collide_rect(player2, w):
+               player2.rect.y -= 3
+           if player2.napr == 'levo' and sprite.collide_rect(player2, w):
+               player2.rect.x += 3
+           if player2.napr == 'pravo' and sprite.collide_rect(player2, w):
+               player2.rect.x -= 3
         for m in m3:
            m.ris()
            if sprite.collide_rect(player, m):
                 player.hp -= 80
+                m3.remove(m)
+           if sprite.collide_rect(player2, m):
+                player2.hp -= 80
                 m3.remove(m)
         window.blit(text3, (720,10))
 
