@@ -96,7 +96,7 @@ class minaobj(sprite.Sprite):
         window.blit(self.image, (self.rect.x, self.rect.y))
         
 
-player = GameSprite('tanku.png', 60, 70, 60, 60, 7, 100)
+player = GameSprite('tanku.png', 60, 70, 60, 60, 6, 100)
 exit1 =  gameobj('выход.jpg', 1300, 400, 50, 50, 0)
 exit2 =  gameobj('выход.jpg', 50, 50, 50, 50, 0)
 exit3 =  gameobj('выход.jpg', 1400, 700, 50, 50, 0)
@@ -253,18 +253,6 @@ while game:
         lvl3 = True
         time1 = tm.time()
 
-    if lvl3 == True:
-        time4 = tm.time()
-        if time4 - time1 > 3:
-            exit3.ris()
-        text3 = f1.render(str(time4-time1), True, (255,255,255))
-
-    if sprite.collide_rect(player2, exit3):
-        text4 = f1.render('player2 win', True, (255,255,255))
-        window.blit(text4, (750, 400))
-        tm.sleep(5)
-        game = False
-
     
     if player.hp <= 0:
         game = False
@@ -282,56 +270,56 @@ while game:
         for w in map1:
             w.ris()   
             if player.napr == 'vverh' and sprite.collide_rect(player, w):
-                player.rect.y += 3
+                player.rect.y +=5
             if player.napr == 'vniz' and sprite.collide_rect(player, w):
-                player.rect.y -= 3
+                player.rect.y -=5
             if player.napr == 'levo' and sprite.collide_rect(player, w):
-                player.rect.x += 3
+                player.rect.x +=5
             if player.napr == 'pravo' and sprite.collide_rect(player, w):
-                player.rect.x -= 3
+                player.rect.x -=5
             if player2.napr == 'vverh' and sprite.collide_rect(player2, w):
-                player2.rect.y += 3
+                player2.rect.y +=5
             if player2.napr == 'vniz' and sprite.collide_rect(player2, w):
-                player2.rect.y -= 3
+                player2.rect.y -=5
             if player2.napr == 'levo' and sprite.collide_rect(player2, w):
-                player2.rect.x += 3
+                player2.rect.x +=5
             if player2.napr == 'pravo' and sprite.collide_rect(player2, w):
-                player2.rect.x -= 3    
+                player2.rect.x -= 5   
         for m in m1:
             m.ris()
             if sprite.collide_rect(player, m):
-                    player.hp -= 80
+                    player.speed -= 0.5
                     m1.remove(m)
             if sprite.collide_rect(player2, m):
-                    player2.hp -= 80
+                    player2.speed -= 0.5
                     m1.remove(m)
 
     if lvl2 == True:
         for w in map2:
            w.ris()
            if player.napr == 'vverh' and sprite.collide_rect(player, w):
-               player.rect.y += 3
+               player.rect.y += 5
            if player.napr == 'vniz' and sprite.collide_rect(player, w):
-               player.rect.y -= 3
+               player.rect.y -= 5
            if player.napr == 'levo' and sprite.collide_rect(player, w):
-               player.rect.x += 3
+               player.rect.x += 5
            if player.napr == 'pravo' and sprite.collide_rect(player, w):
-               player.rect.x -= 3
+               player.rect.x -= 5
            if player2.napr == 'vverh' and sprite.collide_rect(player2, w):
-               player2.rect.y += 3
+               player2.rect.y += 5
            if player2.napr == 'vniz' and sprite.collide_rect(player2, w):
-               player2.rect.y -= 3
+               player2.rect.y -= 5
            if player2.napr == 'levo' and sprite.collide_rect(player2, w):
-               player2.rect.x += 3
+               player2.rect.x += 5
            if player2.napr == 'pravo' and sprite.collide_rect(player2, w):
-               player2.rect.x -= 3
+               player2.rect.x -= 5
         for m in m2:
            m.ris()
            if sprite.collide_rect(player, m):
-                   player.hp -= 80
+                   player.speed  -= 0.5
                    m2.remove(m)
            if sprite.collide_rect(player2, m):
-                   player2.hp -= 80
+                   player2.speed -= 0.5
                    m2.remove(m)
         window.blit(text2, (720,10))
 
@@ -339,38 +327,51 @@ while game:
         window.blit(text, (720,10))
                 
     if lvl3 == True:
+        time4 = tm.time()
+        if time4 - time1 > 3:
+            exit3.ris()
+        text3 = f1.render(str(time4-time1), True, (255,255,255))
         for w in map3:
            w.ris()
            if player.napr == 'vverh' and sprite.collide_rect(player, w):
-               player.rect.y += 3
+               player.rect.y += 5
            if player.napr == 'vniz' and sprite.collide_rect(player, w):
-               player.rect.y -= 3
+               player.rect.y -= 5
            if player.napr == 'levo' and sprite.collide_rect(player, w):
-               player.rect.x += 3
+               player.rect.x += 5
            if player.napr == 'pravo' and sprite.collide_rect(player, w):
-               player.rect.x -= 3
+               player.rect.x -= 5
            if player2.napr == 'vverh' and sprite.collide_rect(player2, w):
-               player2.rect.y += 3
+               player2.rect.y += 5
            if player2.napr == 'vniz' and sprite.collide_rect(player2, w):
-               player2.rect.y -= 3
+               player2.rect.y -= 5
            if player2.napr == 'levo' and sprite.collide_rect(player2, w):
-               player2.rect.x += 3
+               player2.rect.x += 5
            if player2.napr == 'pravo' and sprite.collide_rect(player2, w):
-               player2.rect.x -= 3
+               player2.rect.x -= 5
         for m in m3:
            m.ris()
            if sprite.collide_rect(player, m):
-                player.hp -= 80
+                player.speed -= 1
                 m3.remove(m)
            if sprite.collide_rect(player2, m):
-                player2.hp -= 80
+                player2.speed -= 1
                 m3.remove(m)
         window.blit(text3, (720,10))
+
+        if sprite.collide_rect(player2, exit3):
+            game = False
 
     for pp in mybullets:
         pp.ris() 
         if sprite.collide_rect(pp, player2):
             player2.hp -= 40
             mybullets.remove(pp)
+        for w in map1:
+            if sprite.collide_rect(pp, w):
+                try:
+                    mybullets.remove(pp)
+                except:
+                    pass
     fps.tick(60)
     display.update()
