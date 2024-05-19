@@ -234,25 +234,6 @@ while game:
 
     text = f1.render(str(time2-time1), True, (255,255,255))
 
-   
-    if sprite.collide_rect(player2, exit1):
-        exit1.rect.x=5000
-        lvl1 = False
-        lvl2 = True
-        time1 = tm.time()
-
-    if lvl2 == True:
-        time3 = tm.time()
-        if time3 - time1 > 3:
-            exit2.ris()
-        text2 = f1.render(str(time3-time1), True, (255,255,255))    
-
-    if sprite.collide_rect(player2, exit2):
-        exit2.rect.x = 5000
-        lvl2 = False
-        lvl3 = True
-        time1 = tm.time()
-
     
     if player.hp <= 0:
         game = False
@@ -293,8 +274,18 @@ while game:
             if sprite.collide_rect(player2, m):
                     player2.speed -= 0.5
                     m1.remove(m)
+        if sprite.collide_rect(player2, exit1):
+            exit1.rect.x=5000
+            lvl1 = False
+            lvl2 = True
+            time1 = tm.time()
+
 
     if lvl2 == True:
+        time3 = tm.time()
+        if time3 - time1 > 3:
+            exit2.ris()
+        text2 = f1.render(str(time3-time1), True, (255,255,255))    
         for w in map2:
            w.ris()
            if player.napr == 'vverh' and sprite.collide_rect(player, w):
@@ -321,6 +312,12 @@ while game:
            if sprite.collide_rect(player2, m):
                    player2.speed -= 0.5
                    m2.remove(m)
+
+        if sprite.collide_rect(player2, exit2):
+            exit2.rect.x = 5000
+            lvl2 = False
+            lvl3 = True
+            time1 = tm.time()
         window.blit(text2, (720,10))
 
     if lvl1 == True:
