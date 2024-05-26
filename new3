@@ -7,11 +7,13 @@ window = display.set_mode((1500, 800))
 f1 = font.Font(None, 36)
 
 fps = time.Clock()
-game = True
+game = False
 ex = False
 lvl1 = True
 lvl2 = False
 lvl3 = False
+nachalo = True
+
 
 class GameSprite(sprite.Sprite):
     def __init__(self, player_image, size_x, size_y, player_x, player_y,  player_speed, player_hp):
@@ -183,6 +185,21 @@ for y in karta:
     y2 +=40
 
 file.close()
+
+while nachalo:
+    txt = f1.render('press Space', True, (255,255,255))
+    for e in event.get():
+        if e.type == QUIT:
+            game = False
+            nachalo = False
+        if e.type == KEYDOWN:
+            if e.key == K_SPACE:
+                game = True
+                nachalo = False
+    window.blit(txt,(750,400))
+
+    fps.tick(60)
+    display.update()
 
 time1 = tm.time()
 while game:
