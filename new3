@@ -13,6 +13,7 @@ lvl1 = True
 lvl2 = False
 lvl3 = False
 nachalo = True
+konec = False
 
 
 class GameSprite(sprite.Sprite):
@@ -375,17 +376,39 @@ while game:
 
         if sprite.collide_rect(player2, exit3):
             game = False
+            konec = True
+            win1 = True
 
     for pp in mybullets:
         pp.ris() 
         if sprite.collide_rect(pp, player2):
             player2.hp -= 40
             mybullets.remove(pp)
+            if player2.hp < 0:
+                game = False
+                konec = True
+                win1 = False
         for w in map1:
             if sprite.collide_rect(pp, w):
                 try:
                     mybullets.remove(pp)
                 except:
                     pass
+    fps.tick(60)
+    display.update()
+
+while konec:
+    window.fill((40, 80, 60))
+    if win1 == True:
+        txt1 = f1.render('player 2 win', True, (255,255,255))
+    else:
+        txt1 = f1.render('player 1 win', True, (255,255,255))
+    for e in event.get():
+        if e.type == QUIT:
+            game = False
+            nachalo = False
+            konec = False
+    window.blit(txt1,(750,400))
+
     fps.tick(60)
     display.update()
